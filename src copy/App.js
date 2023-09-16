@@ -71,6 +71,7 @@ export default function App() {
   }
 
   function handleAddToWatchlist(movie) {
+    if (!watched) return setWatched([movie]);
     setWatched((previousWatched) => [...previousWatched, movie]);
   }
 
@@ -89,7 +90,7 @@ export default function App() {
       <Main>
         <Box>
           {isLoading && !error && <Loader />}
-          {!isLoading && error && <ErrorMessage message={error} />}
+          {!isLoading && error && <Message message={error} />}
           {!isLoading && !error && (
             <Movies onSelectMovie={handleSelectMovie} movies={movies} />
           )}
@@ -103,7 +104,7 @@ export default function App() {
               onAddToWatchlist={handleAddToWatchlist}
               watched={watched}
             />
-          ) : (
+          ) : watched ? (
             <>
               <WatchedMoviesSummary watched={watched} />
               <WatchedMovies
@@ -111,16 +112,21 @@ export default function App() {
                 onRemoveFromWatchlist={handleRemoveFromWatchlist}
               />
             </>
+          ) : (
+            <Message
+              message="The movie you rated and added to the watch list will appear here"
+              type="message"
+            />
           )}
         </Box>
       </Main>
     </>
   );
 }
-function ErrorMessage({ message }) {
+function Message({ message, type = "error" }) {
   return (
-    <p className="error">
-      <span>⛔</span> {message}
+    <p className="message">
+      {type === "error" ? <span>⛔</span> : <span>ℹ️</span>} {message}
     </p>
   );
 }
@@ -236,7 +242,7 @@ function MovieDetails({
   const [error, setError] = useState("");
   const [userRating, setUserRating] = useState(null);
 
-  const isWatched = watched.some((m) => m.imdbID === movieId);
+  const isWatched = watched ? watched.some((m) => m.imdbID === movieId) : false;
   const countDecisions = useRef(0);
 
   const {
@@ -326,7 +332,7 @@ function MovieDetails({
   return (
     <div className="details">
       {isLoading && <Loader />}
-      {!isLoading && error && <ErrorMessage message={error} />}
+      {!isLoading && error && <Message message={error} />}
       {!isLoading && !error && (
         <>
           <header>
