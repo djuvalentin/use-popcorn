@@ -281,7 +281,7 @@ function MovieDetails({
         setError("");
 
         const res = await fetch(
-          `http://www.omdbapi.com/?i=${movieId}&apikey=${KEY}`
+          `https://www.omdbapi.com/?i=${movieId}&apikey=${KEY}`
         );
         if (!res.ok) throw new Error("Failed to fetch");
 
