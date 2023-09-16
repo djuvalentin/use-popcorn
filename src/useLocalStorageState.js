@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export function useLocalStorageState(key) {
   const [value, setValue] = useState(() => {
     const watchedMovies = JSON.parse(localStorage.getItem(key));
+
     return watchedMovies || [];
   });
 

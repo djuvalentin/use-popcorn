@@ -71,6 +71,7 @@ export default function App() {
   }
 
   function handleAddToWatchlist(movie) {
+    if (!watched) return setWatched([movie]);
     setWatched((previousWatched) => [...previousWatched, movie]);
   }
 
@@ -119,7 +120,7 @@ export default function App() {
 }
 function ErrorMessage({ message }) {
   return (
-    <p className="error">
+    <p className="message">
       <span>⛔</span> {message}
     </p>
   );
